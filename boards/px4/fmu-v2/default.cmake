@@ -62,19 +62,19 @@ px4_add_board(
 		#uavcan
 
 	MODULES
-		#attitude_estimator_q
-		camera_feedback
+		attitude_estimator_q
+		#camera_feedback
 		commander
 		dataman
-		ekf2
-		events
+		#ekf2
+		#events
 		fw_att_control
 		fw_pos_control_l1
 		#rover_pos_control
 		land_detector
 		#landing_target_estimator
 		load_mon
-		#local_position_estimator
+		local_position_estimator
 		logger
 		mavlink
 		mc_att_control

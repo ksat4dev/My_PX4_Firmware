@@ -179,7 +179,9 @@ void BlockLocalPositionEstimator::mocapCorrect()
 }
 
 void BlockLocalPositionEstimator::mocapCheckTimeout()
-{
+{  float dt = _timeStamp - _time_last_mocap;
+    double lpe_freq = 1/dt;
+     PX4_INFO("LPE Frequency is : %f Hz",lpe_freq);
 	if (_timeStamp - _time_last_mocap > MOCAP_TIMEOUT) {
 		if (!(_sensorTimeout & SENSOR_MOCAP)) {
 			_sensorTimeout |= SENSOR_MOCAP;

@@ -379,6 +379,8 @@ MavlinkReceiver::send_storage_information(int storage_id)
 void
 MavlinkReceiver::handle_message_command_long(mavlink_message_t *msg)
 {
+
+	PX4_INFO("-------------------------REACHING HERE-----------------------------");
 	/* command */
 	mavlink_command_long_t cmd_mavlink;
 	mavlink_msg_command_long_decode(msg, &cmd_mavlink);
@@ -691,9 +693,17 @@ MavlinkReceiver::handle_message_distance_sensor(mavlink_message_t *msg)
 void
 MavlinkReceiver::handle_message_att_pos_mocap(mavlink_message_t *msg)
 {
+	float t_old = 0.0;
+	float t_new = hrt_absolute_time();
+    float dt = t_new - t_old;
+	t_old = t_new;
+
+	double mav_rc_freq = 1/dt;
+
+	PX4_INFO("MAVLink Receiver Frequency is : %f Hz",mav_rc_freq);
+
 	mavlink_att_pos_mocap_t mocap;
 	mavlink_msg_att_pos_mocap_decode(msg, &mocap);
-
 	vehicle_odometry_s mocap_odom{};
 
 	mocap_odom.timestamp = _mavlink_timesync.sync_stamp(mocap.time_usec);
@@ -1903,6 +1913,7 @@ MavlinkReceiver::handle_message_manual_control(mavlink_message_t *msg)
 void
 MavlinkReceiver::handle_message_heartbeat(mavlink_message_t *msg)
 {
+	PX4_INFO("Getting here");
 	/* telemetry status supported only on first TELEMETRY_STATUS_ORB_ID_NUM mavlink channels */
 	if (_mavlink->get_channel() < (mavlink_channel_t)ORB_MULTI_MAX_INSTANCES) {
 		mavlink_heartbeat_t hb;
